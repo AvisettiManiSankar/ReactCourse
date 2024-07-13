@@ -1,5 +1,8 @@
+import './app.css'
+import Products from './Components/Products';
+
 function App(){
-    return <h2>This is App Component</h2>
+    return <Products></Products>
 }
 
 export default App;
