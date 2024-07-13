@@ -2,7 +2,11 @@ import './app.css'
 import Products from './Components/Products';
 
 function App(){
-    return <Products></Products>
+    return (<div className='row'>
+                <div className='col-lg-8 mx-auto'>
+                    <Products></Products>
+                </div>
+            </div>)
 }
 
 export default App;
