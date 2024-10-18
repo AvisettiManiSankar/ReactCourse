@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from './Button'
 
 function ProductDetails(props){
-    
-    let productCount = 0;
+    console.log(props.stock)
+
+    let [productCount, updateCount] = useState(0)
 
     function displayFormattedProductCount(){
         return productCount > 0 ? productCount : 'Zero';
@@ -13,21 +14,21 @@ function ProductDetails(props){
     badgeClass += props.isAvailable ? "bg-success" : "bg-danger";
 
     let decrementProductCount = function(){
-        productCount--;
+        updateCount(--productCount);
         console.log(productCount);
     }
 
     let incrementProductCount = function(){
-        productCount++;
+        updateCount(++productCount);
         console.log(productCount);
     }
 
     return (
         <div className="d-flex align-items-center justify-content-start mt-1">
             <h6 className="font-weight-bold my-2" style={ {marginRight: 30} }>${props.price}</h6>
-            <Button clickEventHandler={decrementProductCount}>-</Button>
+            <Button clickEventHandler={decrementProductCount} disabled={productCount === 0}>-</Button>    {/* Here disabled is custom attribute */}
             <span style={ {padding: '0px 14px', fontSize:13} }>{displayFormattedProductCount()}</span>
-            <Button clickEventHandler={incrementProductCount}>+</Button>
+            <Button clickEventHandler={incrementProductCount} disabled={productCount>=props.stock}>+</Button>
             <span className={badgeClass}>{props.isAvailable ? 'Available' : 'Unavailable'}</span>
         </div>
     )

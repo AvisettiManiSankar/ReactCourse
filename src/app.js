@@ -1,5 +1,8 @@
+import { useState } from 'react';
 import './app.css'
-import Products from './Components/Products';
+import CreateProduct from './Components/CreateProduct/CreateProduct';
+import ProductList from './Components/ProductList/ProductList';
+import FilterProduct from './Components/FilterProduct/FilterProduct';
 
 const products = [
     {
@@ -8,7 +11,8 @@ const products = [
         desc: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit fuga autem maiores necessitatibus.',
         isAvailable: true,
         image: 'assets/images/fresh-milk.png',
-        price: 12
+        price: 12,
+        stock:5
     },
     {
         pID: 2, 
@@ -16,7 +20,8 @@ const products = [
         desc: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit fuga autem maiores necessitatibus.',
         isAvailable: false,
         image: "assets/images/cottage-cheese.png",
-        price: 10
+        price: 10,
+        stock:3
     },
     {
         pID: 3, 
@@ -24,7 +29,8 @@ const products = [
         desc: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit fuga autem maiores necessitatibus.',
         isAvailable: true,
         image: "assets/images/brocoli.png",
-        price: 15
+        price: 15,
+        stock:5
     },
     {
         pID: 4, 
@@ -32,7 +38,8 @@ const products = [
         desc: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit fuga autem maiores necessitatibus.',
         isAvailable: true,
         image: "assets/images/oranges.png",
-        price: 20
+        price: 20,
+        stock:8
     },
     {
         pID: 5, 
@@ -40,57 +47,42 @@ const products = [
         desc: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit fuga autem maiores necessitatibus.',
         isAvailable: false,
         image: "assets/images/olive-oil.png",
-        price: 14
+        price: 14,
+        stock:1
     }
 ]
 
 function App(){
-    return (<div className='row'>
-                <div className='col-lg-8 mx-auto'>
-                    <ul className="list-group shadow">
-                        <Products
-                            id = {products[0].pID}
-                            name = {products[0].pName}
-                            description = {products[0].desc}
-                            isAvailable = {products[0].isAvailable}
-                            imageUrl = {products[0].image}
-                            price = {products[0].price}
-                            ></Products>
-                        <Products
-                            id = {products[1].pID}
-                            name = {products[1].pName}
-                            description = {products[1].desc}
-                            isAvailable = {products[1].isAvailable}
-                            imageUrl = {products[1].image}
-                            price = {products[1].price}
-                            ></Products>
-                        <Products
-                            id = {products[2].pID}
-                            name = {products[2].pName}
-                            description = {products[2].desc}
-                            isAvailable = {products[2].isAvailable}
-                            imageUrl = {products[2].image}
-                            price = {products[2].price}
-                            ></Products>
-                        <Products
-                            id = {products[3].pID}
-                            name = {products[3].pName}
-                            description = {products[3].desc}
-                            isAvailable = {products[3].isAvailable}
-                            imageUrl = {products[3].image}
-                            price = {products[3].price}
-                            ></Products>
-                        <Products
-                            id = {products[4].pID}
-                            name = {products[4].pName}
-                            description = {products[4].desc}
-                            isAvailable = {products[4].isAvailable}
-                            imageUrl = {products[4].image}
-                            price = {products[4].price}
-                            ></Products>
-                    </ul>
-                </div>
-            </div>)
+    let [newProductsList, updateProducts] = useState(products)
+    let [filterTextvalue, updateFilterText] = useState('all')
+
+    let filteredProductList = newProductsList.filter((product)=>{
+        if(filterTextvalue === 'available'){
+            return product.isAvailable === true;
+        }else if(filterTextvalue === 'unavailable'){
+            return product.isAvailable === false;
+        }else{
+            return product
+        }
+    })
+
+    function createProduct(product){
+        product.pID = newProductsList.length + 1;
+        updateProducts([product,...newProductsList]);
+    }
+
+    function onFilterValueSelected(filterValue){
+        updateFilterText(filterValue);
+    }
+    
+    return(<div className='row'>
+            <div className='col-lg-8 mx-auto'>
+                <CreateProduct createProduct={createProduct}></CreateProduct>
+                <FilterProduct onFilterValueSelected={onFilterValueSelected}></FilterProduct>
+                <ProductList newProductsList={filteredProductList}></ProductList>
+            </div>
+        </div>
+    )
 }
 
 export default App;
